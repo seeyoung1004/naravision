@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026년 5월 달력 - 일정 확인</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --primary-color: #6c5ce7;
+            --sunday-color: #e74c3c;
+            --saturday-color: #3498db;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* 달력 스타일 */
+        .calendar-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h1 { margin: 0; font-size: 24px; color: #2d3436; }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day-name {
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            color: #b2bec3;
+            padding-bottom: 10px;
+        }
+
+        .day {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .day:hover:not(.empty) {
+            background-color: var(--primary-color);
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .day-name:nth-child(1), .sun { color: var(--sunday-color); }
+        .day-name:nth-child(7), .sat { color: var(--saturday-color); }
+        .holiday { color: var(--sunday-color); font-weight: bold; }
+        .empty { visibility: hidden; cursor: default; }
+
+        /* 모달 스타일 */
+        #modalOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: modalShow 0.3s ease;
+        }
+
+        @keyframes modalShow {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h2 { margin-top: 0; color: var(--primary-color); }
+        .modal-content p { color: #636e72; line-height: 1.6; }
+        
+        .close-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calendar-container">
+    <div class="calendar-header">
+        <h1>2026. 05</h1>
+    </div>
+    <div class="calendar-grid" id="calendarGrid">
+        <div class="day-name">일</div><div class="day-name">월</div><div class="day-name">화</div>
+        <div class="day-name">수</div><div class="day-name">목</div><div class="day-name">금</div><div class="day-name">토</div>
+        
+        <!-- 날짜 데이터 (JS에서 생성할 수도 있지만 가독성을 위해 HTML 유지) -->
+        <div class="day empty"></div><div class="day empty"></div><div class="day empty"></div>
+        <div class="day empty"></div><div class="day empty"></div>
+        <div class="day" data-date="5월 1일">1</div>
+        <div class="day sat" data-date="5월 2일">2</div>
+        <div class="day sun" data-date="5월 3일">3</div>
+        <div class="day" data-date="5월 4일">4</div>
+        <div class="day holiday" data-date="5월 5일 (어린이날)">5</div>
+        <div class="day" data-date="5월 6일">6</div>
+        <div class="day" data-date="5월 7일">7</div>
+        <div class="day" data-date="5월 8일">8</div>
+        <div class="day sat" data-date="5월 9일">9</div>
+        <div class="day sun" data-date="5월 10일">10</div>
+        <div class="day" data-date="5월 11일">11</div>
+        <div class="day" data-date="5월 12일">12</div>
+        <div class="day" data-date="5월 13일">13</div>
+        <div class="day" data-date="5월 14일">14</div>
+        <div class="day" data-date="5월 15일">15</div>
+        <div class="day sat" data-date="5월 16일">16</div>
+        <div class="day sun" data-date="5월 17일">17</div>
+        <div class="day" data-date="5월 18일">18</div>
+        <div class="day" data-date="5월 19일">19</div>
+        <div class="day" data-date="5월 20일">20</div>
+        <div class="day" data-date="5월 21일">21</div>
+        <div class="day" data-date="5월 22일">22</div>
+        <div class="day sat" data-date="5월 23일">23</div>
+        <div class="day holiday sun" data-date="5월 24일 (부처님오신날)">24</div>
+        <div class="day holiday" data-date="5월 25일 (대체공휴일)">25</div>
+        <div class="day" data-date="5월 26일">26</div>
+        <div class="day" data-date="5월 27일">27</div>
+        <div class="day" data-date="5월 28일">28</div>
+        <div class="day" data-date="5월 29일">29</div>
+        <div class="day sat" data-date="5월 30일">30</div>
+        <div class="day sun" data-date="5월 31일">31</div>
+    </div>
+</div>
+
+<!-- 모달 구조 -->
+<div id="modalOverlay">
+    <div class="modal-content">
+        <h2 id="modalDate">날짜</h2>
+        <p id="modalMsg">선택하신 날짜의 일정을 확인하세요.</p>
+        <button class="close-btn" onclick="closeModal()">닫기</button>
+    </div>
+</div>
+
+<script>
+    const days = document.querySelectorAll('.day:not(.empty)');
+    const modal = document.getElementById('modalOverlay');
+    const modalDate = document.getElementById('modalDate');
+    const modalMsg = document.getElementById('modalMsg');
+
+    // 날짜 클릭 이벤트
+    days.forEach(day => {
+        day.addEventListener('click', () => {
+            const dateText = day.getAttribute('data-date');
+            modalDate.innerText = dateText;
+            
+            // 공휴일인 경우 특별 메시지
+            if(day.classList.contains('holiday')) {
+                modalMsg.innerText = "즐거운 공휴일입니다! 🎈";
+            } else {
+                modalMsg.innerText = "새로운 일정을 등록해보세요.";
+            }
+            
+            modal.style.display = 'flex';
+        });
+    });
+
+    // 모달 닫기 함수
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // 배경 클릭 시 닫기
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>
